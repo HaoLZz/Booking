@@ -8,7 +8,6 @@ export default function UsersList() {
 
   function changeUser(selectedIndex) {
     setUserIndex(selectedIndex);
-    console.log(selectedIndex);
   }
 
   return (
