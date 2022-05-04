@@ -1,13 +1,36 @@
-import { useState } from 'react';
-import data from '../../static';
-const { users } = data;
+import { useState, useEffect } from 'react';
+import PageSpinner from '../UI/PageSpinner';
+import getData from '../utils/api';
 
 export default function UsersList() {
+  const [users, setUsers] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [userIndex, setUserIndex] = useState(1);
-  const user = users[userIndex];
+  const user = users ? users[userIndex] : null;
+
+  useEffect(() => {
+    getData('http://localhost:3001/users')
+      .then((data) => {
+        setIsLoading(false);
+        setUsers(data);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setError(error);
+      });
+  }, []);
 
   function changeUser(selectedIndex) {
     setUserIndex(selectedIndex);
+  }
+
+  if (error) {
+    return <p>{error.message}</p>;
+  }
+
+  if (isLoading) {
+    return <PageSpinner />;
   }
 
   return (

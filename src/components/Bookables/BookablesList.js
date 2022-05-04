@@ -1,24 +1,41 @@
-import { useReducer } from 'react';
+import { useReducer, useEffect } from 'react';
 import reducer from './reducer';
 import { FaArrowRight } from 'react-icons/fa';
 import data from '../../static';
-const { bookables, sessions, days } = data;
+import getData from '../utils/api';
+import Spinner from '../UI/Spinner';
+
+const { sessions, days } = data;
 
 const initialState = {
   group: 'Rooms',
   bookableIndex: 0,
   hasDetails: true,
-  bookables,
+  bookables: [],
+  isLoading: true,
+  error: false,
 };
 
 export default function BookablesList() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { group, bookableIndex, hasDetails, bookables } = state;
+  const { group, bookableIndex, hasDetails, bookables, isLoading, error } =
+    state;
 
   // Set the group of bookables to be shown.
   const bookablesInGroup = bookables.filter((b) => b.group === group);
   const bookable = bookablesInGroup[bookableIndex];
   const groups = [...new Set(bookables.map((b) => b.group))];
+
+  useEffect(() => {
+    dispatch({ type: 'FETCH_BOOKABLES_REQUEST' });
+    getData('http://localhost:3001/bookables')
+      .then((bookables) =>
+        dispatch({ type: 'FETCH_BOOKABLES_SUCCESS', payload: bookables }),
+      )
+      .catch((error) =>
+        dispatch({ type: 'FETCH_BOOKABLES_ERROR', payload: error }),
+      );
+  }, []);
 
   function changeGroup(e) {
     dispatch({
@@ -42,6 +59,18 @@ export default function BookablesList() {
 
   function toggleDetails() {
     dispatch({ type: 'TOGGLE_HAS_DETAILS' });
+  }
+
+  if (error) {
+    return <p>{error.message}</p>;
+  }
+
+  if (isLoading) {
+    return (
+      <p>
+        <Spinner /> Loading bookables...
+      </p>
+    );
   }
 
   return (
