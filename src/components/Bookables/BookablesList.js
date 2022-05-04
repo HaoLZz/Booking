@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useRef } from 'react';
 import reducer from './reducer';
 import { FaArrowRight } from 'react-icons/fa';
 import data from '../../static';
@@ -26,6 +26,8 @@ export default function BookablesList() {
   const bookable = bookablesInGroup[bookableIndex];
   const groups = [...new Set(bookables.map((b) => b.group))];
 
+  const nextButtonRef = useRef();
+
   useEffect(() => {
     dispatch({ type: 'FETCH_BOOKABLES_REQUEST' });
     getData('http://localhost:3001/bookables')
@@ -49,6 +51,7 @@ export default function BookablesList() {
       type: 'SET_BOOKABLE',
       payload: selectIndex,
     });
+    nextButtonRef.current.focus();
   }
 
   function nextBookable() {
@@ -98,7 +101,12 @@ export default function BookablesList() {
           })}
         </ul>
         <p>
-          <button className="btn" onClick={nextBookable} autoFocus>
+          <button
+            className="btn"
+            onClick={nextBookable}
+            ref={nextButtonRef}
+            autoFocus
+          >
             <FaArrowRight />
             <span>Next</span>
           </button>
