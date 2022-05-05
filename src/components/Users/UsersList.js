@@ -32,9 +32,9 @@ export default function UsersList({ user, setUser }) {
     return <PageSpinner />;
   }
 
-  return users && user ? (
+  return (
     <ul className="users items-list-nav">
-      {users.map((u, i) => {
+      {users.map((u) => {
         return (
           <li key={u.id} className={u.id === user.id ? 'selected' : null}>
             <button className="btn" onClick={() => changeUser(u)}>
@@ -44,5 +44,5 @@ export default function UsersList({ user, setUser }) {
         );
       })}
     </ul>
-  ) : null;
+  );
 }
