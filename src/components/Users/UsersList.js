@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PageSpinner from '../UI/PageSpinner';
-import getData from '../utils/api';
+import { getData } from '../utils/api';
 
 export default function UsersList({ user, setUser }) {
   const [users, setUsers] = useState(null);
