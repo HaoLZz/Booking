@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import PageSpinner from '../UI/PageSpinner';
+import Spinner from '../UI/Spinner';
 import { getData } from '../utils/api';
 
 export default function UsersList({ user, setUser }) {
@@ -10,7 +10,6 @@ export default function UsersList({ user, setUser }) {
   useEffect(() => {
     getData('http://localhost:3001/users')
       .then((users) => {
-        setUser(users[0]);
         setIsLoading(false);
         setUsers(users);
       })
@@ -29,7 +28,11 @@ export default function UsersList({ user, setUser }) {
   }
 
   if (isLoading) {
-    return <PageSpinner />;
+    return (
+      <p>
+        <Spinner /> Loading users...
+      </p>
+    );
   }
 
   return (

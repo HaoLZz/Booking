@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Spinner from '../UI/Spinner';
 
-export default function UserPicker() {
+export default function UserPicker({ user, setUser }) {
   const [users, setUsers] = useState(null);
 
   useEffect(() => {
@@ -9,18 +9,28 @@ export default function UserPicker() {
       const res = await fetch('http://localhost:3001/users');
       const data = await res.json();
       setUsers(data);
+      setUser(data[0]);
     };
     fetchUsers();
-  }, []);
+  }, [setUser]);
+
+  function handleSelect(e) {
+    const selectedID = parseInt(e.target.value, 10);
+    const selectedUser = users.find((u) => u.id === selectedID);
+
+    setUser(selectedUser);
+  }
 
   if (users === null) {
     return <Spinner />;
   }
 
   return (
-    <select>
-      {users.map((user) => (
-        <option key={user.id}>{user.name}</option>
+    <select className="user-picker" onChange={handleSelect} value={user?.id}>
+      {users.map((u) => (
+        <option key={u.id} value={u.id}>
+          {u.name}
+        </option>
       ))}
     </select>
   );
