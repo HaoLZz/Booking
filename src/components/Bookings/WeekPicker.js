@@ -6,8 +6,11 @@ import {
   FaCalendarCheck,
 } from 'react-icons/fa';
 
-export default function WeekPicker({ dispatch }) {
-  const [dateText, setDateText] = useState('');
+import { shortISO } from '../utils/date-wrangler';
+
+export default function WeekPicker({ dispatch, week }) {
+  const initialDateText = shortISO(week.date);
+  const [dateText, setDateText] = useState(initialDateText);
 
   function goToDate() {
     dispatch({ type: 'SET_DATE', payload: dateText });

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { getGrid, transformBookings } from './grid-builder';
+import { parseDateString } from '../utils/date-wrangler';
 
 import { getBookings } from '../utils/api';
 
@@ -69,7 +70,7 @@ export default function BookingsGrid({ week, bookable, booking, setBooking }) {
               </span>
             </th>
             {dates.map((d) => (
-              <th key={d}>{new Date(d).toDateString()}</th>
+              <th key={d}>{parseDateString(d).toDateString()}</th>
             ))}
           </tr>
         </thead>

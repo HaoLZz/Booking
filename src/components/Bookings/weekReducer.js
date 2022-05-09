@@ -1,4 +1,4 @@
-import { getWeek } from '../utils/date-wrangler';
+import { getWeek, parseDateString } from '../utils/date-wrangler';
 
 export default function reducer(state, action) {
   switch (action.type) {
@@ -9,7 +9,7 @@ export default function reducer(state, action) {
     case 'TODAY':
       return getWeek(new Date());
     case 'SET_DATE':
-      return getWeek(new Date(action.payload));
+      return getWeek(parseDateString(action.payload));
     default:
       new Error(`Unknown action type: ${action.type}`);
   }

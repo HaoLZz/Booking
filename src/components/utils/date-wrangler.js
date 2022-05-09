@@ -18,3 +18,8 @@ export function getWeek(forDate, daysOffset = 0) {
 export function shortISO(date) {
   return date.toISOString().split('T')[0];
 }
+
+export function parseDateString(dateString) {
+  const [YYYY, MM, DD] = dateString.split('-');
+  return new Date(YYYY, MM - 1, DD);
+}
