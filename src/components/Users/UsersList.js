@@ -1,23 +1,12 @@
-import { useState, useEffect } from 'react';
 import Spinner from '../UI/Spinner';
-import { getData } from '../utils/api';
+import useFetch from '../utils/useFetch';
 
 export default function UsersList({ user, setUser }) {
-  const [users, setUsers] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    getData('http://localhost:3001/users')
-      .then((users) => {
-        setIsLoading(false);
-        setUsers(users);
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        setError(error);
-      });
-  }, [setUser]);
+  const {
+    data: users = [],
+    status,
+    error,
+  } = useFetch('http://localhost:3001/users');
 
   function changeUser(selectedUser) {
     setUser(selectedUser);
@@ -27,7 +16,7 @@ export default function UsersList({ user, setUser }) {
     return <p>{error.message}</p>;
   }
 
-  if (isLoading) {
+  if (status === 'loading') {
     return (
       <p>
         <Spinner /> Loading users...
