@@ -4,7 +4,9 @@ import useFetch from '../../utils/useFetch';
 import Spinner from '../UI/Spinner';
 
 export default function UserPicker() {
-  const { data: users = [] } = useFetch('http://localhost:3001/users');
+  const { data: users = [] } = useFetch(
+    'https://my-json-server.typicode.com/HaoLZz/Booking/users',
+  );
   const [user, setUser] = useUser();
 
   useEffect(() => {

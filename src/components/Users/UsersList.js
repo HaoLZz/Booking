@@ -6,7 +6,7 @@ export default function UsersList({ user, setUser }) {
     data: users = [],
     status,
     error,
-  } = useFetch('http://localhost:3001/users');
+  } = useFetch('https://my-json-server.typicode.com/HaoLZz/Booking/users');
 
   function changeUser(selectedUser) {
     setUser(selectedUser);
