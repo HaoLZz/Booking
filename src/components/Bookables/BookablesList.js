@@ -8,7 +8,7 @@ export default function BookablesList({ bookable, setBookable }) {
     data: bookables = [],
     status,
     error,
-  } = useFetch('http://localhost:3001/bookables');
+  } = useFetch('https://my-json-server.typicode.com/HaoLZz/Booking/bookables');
 
   // Set the group of bookables to be shown.
   const group = bookable?.group;
