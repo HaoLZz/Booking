@@ -1,4 +1,4 @@
-import { getWeek, parseDateString } from '../utils/date-wrangler';
+import { getWeek, parseDateString } from '../../utils/date-wrangler';
 
 export default function reducer(state, action) {
   switch (action.type) {

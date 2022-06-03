@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useUser } from './UserContext';
-import useFetch from '../utils/useFetch';
+import useFetch from '../../utils/useFetch';
 import Spinner from '../UI/Spinner';
 
 export default function UserPicker() {

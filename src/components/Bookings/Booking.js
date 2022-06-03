@@ -1,4 +1,4 @@
-import { parseDateString } from '../utils/date-wrangler';
+import { parseDateString } from '../../utils/date-wrangler';
 
 export default function Booking({ booking, bookable }) {
   const { title, date, session, notes } = booking;

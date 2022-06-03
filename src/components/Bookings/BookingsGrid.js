@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { getGrid, transformBookings } from './grid-builder';
-import { parseDateString } from '../utils/date-wrangler';
+import { parseDateString } from '../../utils/date-wrangler';
 
-import { getBookings } from '../utils/api';
+import { getBookings } from '../../utils/api';
 
 import Spinner from '../UI/Spinner';
 

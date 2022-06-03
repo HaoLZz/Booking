@@ -1,5 +1,5 @@
 import data from '../../static.json';
-import { addDays, shortISO } from '../utils/date-wrangler';
+import { addDays, shortISO } from '../../utils/date-wrangler';
 const sessionNames = data.sessions;
 
 // Generating a grid with given bookable and starting date

@@ -1,5 +1,6 @@
 {
   "name": "react-hooks-in-action",
+  "description": "practise project for react-hooks-in-action",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

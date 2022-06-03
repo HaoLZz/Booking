@@ -1,5 +1,5 @@
 import { useState, useReducer } from 'react';
-import { getWeek } from '../utils/date-wrangler';
+import { getWeek } from '../../utils/date-wrangler';
 import WeekPicker from './WeekPicker';
 import BookingDetails from './BookingDetails';
 import BookingsGrid from './BookingsGrid';

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
-import useFetch from '../utils/useFetch';
+import useFetch from '../../utils/useFetch';
 import Spinner from '../UI/Spinner';
 
 export default function BookablesList({ bookable, setBookable }) {

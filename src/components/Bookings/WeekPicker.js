@@ -6,7 +6,7 @@ import {
   FaCalendarCheck,
 } from 'react-icons/fa';
 
-import { shortISO } from '../utils/date-wrangler';
+import { shortISO } from '../../utils/date-wrangler';
 
 export default function WeekPicker({ dispatch, week }) {
   const initialDateText = shortISO(week.date);

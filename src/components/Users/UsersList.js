@@ -1,5 +1,5 @@
 import Spinner from '../UI/Spinner';
-import useFetch from '../utils/useFetch';
+import useFetch from '../../utils/useFetch';
 
 export default function UsersList({ user, setUser }) {
   const {
