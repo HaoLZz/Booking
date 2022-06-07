@@ -1,40 +1,20 @@
-import { useEffect, useMemo, useState } from 'react';
-import { getGrid, transformBookings } from './grid-builder';
+import { useEffect } from 'react';
 import { parseDateString } from '../../utils/date-wrangler';
-
-import { getBookings } from '../../utils/api';
-
 import Spinner from '../UI/Spinner';
+import { useBookings, useGrid } from './bookingsHooks';
 
 export default function BookingsGrid({ week, bookable, booking, setBooking }) {
-  const [bookings, setBookings] = useState(null);
-  const [error, setError] = useState(false);
-
-  const { grid, sessions, dates } = useMemo(
-    () => (bookable ? getGrid(bookable, week.start) : {}),
-    [bookable, week.start],
+  const { bookings, status, error } = useBookings(
+    bookable?.id,
+    week.start,
+    week.end,
   );
 
+  const { grid, sessions, dates } = useGrid(bookable, week.start);
+
   useEffect(() => {
-    if (bookable) {
-      let doUpdate = true;
-
-      setBookings(null);
-      setError(false);
-      setBooking(null);
-
-      getBookings(bookable.id, week.start, week.end)
-        .then((res) => {
-          if (doUpdate) {
-            setBookings(transformBookings(res));
-            console.log('data fetching succeses');
-          }
-        })
-        .catch((e) => setError(e));
-      // return a clean-up function to invalidate outdated fetch request
-      return () => (doUpdate = false);
-    }
-  }, [week, bookable, setBooking]);
+    setBooking(null);
+  }, [bookable, week.start, setBooking]);
 
   function cell(session, date) {
     const cellData = bookings?.[session]?.[date] || grid[session][date];
@@ -43,7 +23,9 @@ export default function BookingsGrid({ week, bookable, booking, setBooking }) {
       <td
         key={date}
         className={isSelected ? 'selected' : null}
-        onClick={bookings ? () => setBooking(cellData) : null}
+        onClick={
+          bookings && status === 'success' ? () => setBooking(cellData) : null
+        }
       >
         {cellData.title}
       </td>
@@ -51,17 +33,23 @@ export default function BookingsGrid({ week, bookable, booking, setBooking }) {
   }
 
   if (!grid) {
-    return <p>Loading...</p>;
+    return <p>Waiting for bookable and week details...</p>;
   }
   return (
     <>
-      {error && (
+      {status === 'error' && (
         <p className="bookingsError">
           {`There was a problem loadiing the bookings data (${error})`}
         </p>
       )}
 
-      <table className={bookings ? 'bookingsGrid active' : 'bookingsGrid'}>
+      <table
+        className={
+          bookings && status === 'success'
+            ? 'bookingsGrid active'
+            : 'bookingsGrid'
+        }
+      >
         <thead>
           <tr>
             <th>
