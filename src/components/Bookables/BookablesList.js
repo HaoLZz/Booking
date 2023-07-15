@@ -1,52 +1,26 @@
-import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
-import useFetch from '../../utils/useFetch';
-import Spinner from '../UI/Spinner';
 
-export default function BookablesList({ bookable, setBookable }) {
-  const {
-    data: bookables = [],
-    status,
-    error,
-  } = useFetch('https://my-json-server.typicode.com/HaoLZz/Booking/bookables');
-
+export default function BookablesList({ bookable, bookables, getUrl }) {
   // Set the group of bookables to be shown.
   const group = bookable?.group;
   const bookablesInGroup = bookables.filter((b) => b.group === group);
   const groups = [...new Set(bookables.map((b) => b.group))];
 
-  useEffect(() => {
-    setBookable(bookables[0]);
-  }, [bookables, setBookable]);
+  const navigate = useNavigate();
 
   function changeGroup(e) {
-    const bookablesInGroup = bookables.filter(
+    const bookablesInInSelectedGroup = bookables.filter(
       (b) => b.group === e.target.value,
     );
-    setBookable(bookablesInGroup[0]);
-  }
-
-  function changeBookable(selectedBookable) {
-    setBookable(selectedBookable);
+    navigate(getUrl(bookablesInInSelectedGroup[0].id));
   }
 
   function nextBookable() {
     const i = bookablesInGroup.indexOf(bookable);
     const nextIndex = (i + 1) % bookablesInGroup.length;
     const nextBookable = bookablesInGroup[nextIndex];
-    setBookable(nextBookable);
-  }
-
-  if (status === 'error') {
-    return <p>{error.message}</p>;
-  }
-
-  if (status === 'loading') {
-    return (
-      <p>
-        <Spinner /> Loading bookables...
-      </p>
-    );
+    navigate(getUrl(nextBookable.id));
   }
 
   return (
@@ -59,15 +33,13 @@ export default function BookablesList({ bookable, setBookable }) {
         ))}
       </select>
       <ul className="bookables items-list-nav">
-        {bookablesInGroup.map((b) => {
-          return (
-            <li key={b.id} className={b.id === bookable.id ? 'selected' : null}>
-              <button className="btn" onClick={() => changeBookable(b)}>
-                {b.title}
-              </button>
-            </li>
-          );
-        })}
+        {bookablesInGroup.map((b) => (
+          <li key={b.id} className={b.id === bookable.id ? 'selected' : null}>
+            <Link to={getUrl(b.id)} className="btn" replace>
+              {b.title}
+            </Link>
+          </li>
+        ))}
       </ul>
       <p>
         <button className="btn" onClick={nextBookable} autoFocus>
