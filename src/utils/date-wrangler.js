@@ -1,3 +1,12 @@
+export function isDate(dateStr) {
+  try {
+    const date = new Date(dateStr);
+    return date instanceof Date && !isNaN(date.valueOf());
+  } catch (error) {
+    return false;
+  }
+}
+
 export function addDays(date, daysToAdd) {
   const clone = new Date(date.getTime());
   clone.setDate(clone.getDate() + daysToAdd);
