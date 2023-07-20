@@ -1,5 +1,6 @@
 export function isDate(dateStr) {
   try {
+    if (!dateStr || typeof dateStr !== 'string') return false;
     const date = new Date(dateStr);
     return date instanceof Date && !isNaN(date.valueOf());
   } catch (error) {

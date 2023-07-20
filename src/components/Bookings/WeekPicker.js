@@ -1,30 +1,35 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import {
   FaChevronLeft,
   FaCalendarDay,
   FaChevronRight,
   FaCalendarCheck,
 } from 'react-icons/fa';
+import { useBookingsParams } from './bookingsHooks';
+import { shortISO, addDays } from '../../utils/date-wrangler';
 
-import { shortISO } from '../../utils/date-wrangler';
+export default function WeekPicker() {
+  const textboxRef = useRef();
 
-export default function WeekPicker({ dispatch, week }) {
-  const initialDateText = shortISO(week.date);
-  const [dateText, setDateText] = useState(initialDateText);
+  const { date, setBookingsDate: goToDate } = useBookingsParams();
 
-  function goToDate() {
-    dispatch({ type: 'SET_DATE', payload: dateText });
-  }
+  const dates = {
+    prev: shortISO(addDays(date, -7)),
+    next: shortISO(addDays(date, 7)),
+    today: shortISO(new Date()),
+  };
+
+  console.log(dates);
 
   return (
     <div>
       <p className="date-picker">
-        <button className="btn" onClick={() => dispatch({ type: 'PREV_WEEK' })}>
+        <button className="btn" onClick={() => goToDate(dates.prev)}>
           <FaChevronLeft />
           <span>Prev</span>
         </button>
 
-        <button className="btn" onClick={() => dispatch({ type: 'TODAY' })}>
+        <button className="btn" onClick={() => goToDate(dates.today)}>
           <FaCalendarDay />
           <span>Today</span>
         </button>
@@ -32,23 +37,24 @@ export default function WeekPicker({ dispatch, week }) {
         <span>
           <input
             type="text"
-            placeholder="e.g. 2022-05-04"
-            value={dateText}
-            onChange={(e) => setDateText(e.target.value)}
+            ref={textboxRef}
+            placeholder="e.g. 2023-07-02"
+            id="wpDate"
+            defaultValue="2023-07-15"
           />
-          <button className="go btn" onClick={goToDate}>
+          <button
+            className="go btn"
+            onClick={() => goToDate(textboxRef.current.value)}
+          >
             <FaCalendarCheck /> <span>Go</span>
           </button>
         </span>
 
-        <button className="btn" onClick={() => dispatch({ type: 'NEXT_WEEK' })}>
+        <button className="btn" onClick={() => goToDate(dates.next)}>
           <FaChevronRight />
           <span>Next</span>
         </button>
       </p>
-      {/* <p>
-        {week.start.toDateString()} - {week.end.toDateString()}
-      </p> */}
     </div>
   );
 }
